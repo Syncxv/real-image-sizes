@@ -17,10 +17,12 @@ class RealImageSizes extends Plugin {
         const ImageComponent = getModule((m) => m.displayName === 'Image', false);
         inject(`${this.entityID}-Image-render`, ImageComponent.prototype, 'render', (_, res) => {
             const img = findInReactTree(res, (p) => p.src);
-            const urlObj = new URL(img.src);
-            urlObj.searchParams.delete('width');
-            urlObj.searchParams.delete('height');
-            img.src = urlObj.toString();
+            if (img) {
+                const urlObj = new URL(img.src);
+                urlObj.searchParams.delete('width');
+                urlObj.searchParams.delete('height');
+                img.src = urlObj.toString();
+            }
             return res;
         });
     }
